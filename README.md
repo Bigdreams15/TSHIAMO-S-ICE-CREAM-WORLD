@@ -25,35 +25,32 @@ This is a static site and does not need a server-side runtime. After adding the 
 3. Select the `main` branch and the `/ (root)` folder, then click **Save**.
 4. Wait for the Pages deployment to finish. The site address appears in **Settings → Pages**.
 
-## Save and push changes safely
+## Deploy on Render
 
-Install Git for Windows if `git` is not recognized in the VS Code terminal. From this project folder, check the connection before adding or pushing anything:
+The `render.yaml` file describes a Render static site. It builds the site into a clean `dist` folder, so Git files and project documentation are not included in the published website. There are no runtime requirements, secrets, or payment credentials to configure.
+
+1. Sign in to [Render](https://dashboard.render.com/) using your GitHub account and authorize access to this repository.
+2. In the Render dashboard, choose **New → Blueprint**.
+3. Select the `Bigdreams15/TSHIAMO-S-ICE-CREAM-WORLD` repository and its `main` branch.
+4. Review the service described by `render.yaml`, then choose **Apply** to create the static site.
+5. When its first deployment succeeds, open the `.onrender.com` URL shown on the Render service page. Future pushes to `main` automatically trigger a redeploy.
+
+GitHub Pages remains enabled separately; deploying to Render does not change or turn it off. Render and GitHub Pages will have separate website addresses.
+
+## Save and push changes
+
+Open the VS Code terminal in this project folder. Check which files changed:
 
 ```powershell
 git status
-git remote -v
 ```
 
-The local project folder and the GitHub repository are currently empty and not connected. If `git status` says **not a git repository**, initialize this folder once:
+This folder is already connected to the `main` branch of the GitHub repository. Save the Render configuration and updated instructions, then publish them:
 
 ```powershell
-git init -b main
+git add render.yaml README.md
+git commit -m "Prepare static site for Render deployment"
+git push
 ```
 
-If `git status` already shows a branch, do not initialize again. Check `git remote -v`; if it shows no `origin`, connect the existing, empty GitHub repository:
-
-```powershell
-git remote add origin https://github.com/Bigdreams15/TSHIAMO-S-ICE-CREAM-WORLD.git
-```
-
-Then save and publish your changes:
-
-```powershell
-git add index.html styles.css app.js README.md
-git commit -m "Build Tshiamo's Ice Cream World website"
-git push -u origin main
-```
-
-Because the GitHub repository is currently empty, this first push will publish your new local `main` branch. If Git says the current branch is not `main`, check `git branch --show-current` and use that branch name instead. If the remote is no longer empty when you do this, stop and review `git status` and `git log --oneline --all` before pushing; do not force-push.
-
-These commands do not include passwords or access tokens. If GitHub prompts you to authenticate, follow its official browser-based sign-in flow; never paste a password or token into chat or website source files.
+These commands do not include passwords or access tokens. If GitHub asks you to sign in, follow its official browser-based sign-in flow; never paste a password or token into chat or website source files.
